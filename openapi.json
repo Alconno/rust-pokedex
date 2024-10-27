@@ -1,0 +1,2526 @@
+{
+  "info": {
+    "title": "Pokemon game",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/admin/pokedexes/{user_pokedex_id}": {
+      "delete": {
+        "tags": [
+          "admin_pokedexes"
+        ],
+        "summary": "Delete a specific user pokedex",
+        "parameters": [
+          {
+            "name": "user_pokedex_id",
+            "in": "path",
+            "description": "The unique identifier of the user pokedex",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns a success message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/pokedexes": {
+      "get": {
+        "tags": [
+          "admin_pokedexes"
+        ],
+        "summary": "Get paginated user pokedexes",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "sort_by",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "created_at",
+                "updated_at"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated user pokedexes retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "user_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "pokemon_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "user_id",
+                      "pokemon_id",
+                      "created_at",
+                      "updated_at"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/pokemons": {
+      "get": {
+        "tags": [
+          "admin_pokemons"
+        ],
+        "summary": "Get paginated pokemons",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort_by",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Name",
+                "BaseExperience",
+                "Height",
+                "Weight",
+                "CreatedAt",
+                "UpdatedAt"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated pokemons retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "base_experience": {
+                        "type": "integer"
+                      },
+                      "height": {
+                        "type": "integer"
+                      },
+                      "weight": {
+                        "type": "integer"
+                      },
+                      "pokemon_id": {
+                        "type": "integer"
+                      },
+                      "is_default": {
+                        "type": "boolean"
+                      },
+                      "order": {
+                        "type": "integer"
+                      },
+                      "image": {
+                        "type": "string",
+                        "format": "url"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "base_experience",
+                      "height",
+                      "weight",
+                      "pokemon_id",
+                      "is_default",
+                      "order",
+                      "image",
+                      "created_at",
+                      "updated_at"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/pokemons/{pokemon_id}": {
+      "get": {
+        "tags": [
+          "admin_pokemons"
+        ],
+        "summary": "Get detailed information about a specific Pokemon",
+        "parameters": [
+          {
+            "name": "pokemon_id",
+            "in": "path",
+            "description": "The unique identifier of the Pokemon",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detailed information about the specified Pokemon",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "base_experience": {
+                      "type": "integer"
+                    },
+                    "height": {
+                      "type": "integer"
+                    },
+                    "weight": {
+                      "type": "integer"
+                    },
+                    "pokemon_id": {
+                      "type": "integer"
+                    },
+                    "is_default": {
+                      "type": "boolean"
+                    },
+                    "order": {
+                      "type": "integer"
+                    },
+                    "image": {
+                      "type": "string",
+                      "format": "url"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "base_experience",
+                    "height",
+                    "weight",
+                    "pokemon_id",
+                    "is_default",
+                    "order",
+                    "image",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/pokemons/{pokemon_id}/update": {
+      "put": {
+        "tags": [
+          "admin_pokemons"
+        ],
+        "summary": "Update a specific pokemon",
+        "parameters": [
+          {
+            "name": "pokemon_id",
+            "in": "path",
+            "description": "The unique identifier of the Pokemon",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "base_experience": {
+                    "type": "integer"
+                  },
+                  "height": {
+                    "type": "integer"
+                  },
+                  "weight": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the specified Pokemon details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "base_experience": {
+                      "type": "integer"
+                    },
+                    "height": {
+                      "type": "integer"
+                    },
+                    "weight": {
+                      "type": "integer"
+                    },
+                    "pokemon_id": {
+                      "type": "integer"
+                    },
+                    "is_default": {
+                      "type": "boolean"
+                    },
+                    "order": {
+                      "type": "integer"
+                    },
+                    "image": {
+                      "type": "string",
+                      "format": "url"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/pokemons/{pokemon_id}/abilities/{pokemon_ability_id}/update": {
+      "put": {
+        "tags": [
+          "admin_pokemons"
+        ],
+        "summary": "Update a specific pokemon ability",
+        "parameters": [
+          {
+            "name": "pokemon_id",
+            "in": "path",
+            "description": "The unique identifier of the Pokemon",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "pokemon_ability_id",
+            "in": "path",
+            "description": "The unique identifier of the Pokemon ability",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the updated pokemon ability details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "pokemon_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/pokemons/{pokemon_id}/stats/{pokemon_stat_id}/update": {
+      "put": {
+        "tags": [
+          "admin_pokemons"
+        ],
+        "summary": "Update a specific pokemon stat",
+        "parameters": [
+          {
+            "name": "pokemon_id",
+            "in": "path",
+            "description": "The unique identifier of the Pokemon",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "pokemon_stat_id",
+            "in": "path",
+            "description": "The unique identifier of the Pokemon Stat",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "base_stat": {
+                    "type": "integer"
+                  },
+                  "effort": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the updated pokemon stat details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "pokemon_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "base_stat": {
+                      "type": "integer"
+                    },
+                    "effort": {
+                      "type": "integer"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/pokemons/{pokemon_id}/types/{pokemon_type_id}/update": {
+      "put": {
+        "tags": [
+          "admin_pokemons"
+        ],
+        "summary": "Update a specific pokemon type",
+        "parameters": [
+          {
+            "name": "pokemon_id",
+            "in": "path",
+            "description": "The unique identifier of the Pokemon",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "pokemon_type_id",
+            "in": "path",
+            "description": "The unique identifier of the Pokemon Type",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "slot": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the updated pokemon type details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "pokemon_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "slot": {
+                      "type": "integer"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/users/{user_id}/activate": {
+      "patch": {
+        "tags": [
+          "admin_users"
+        ],
+        "summary": "Activate an user",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User activated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "first_name": {
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string"
+                    },
+                    "email_verified_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "refresh_token": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "deleted_at": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "password",
+                    "role",
+                    "email_verified_at",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/users/{user_id}/deactivate": {
+      "patch": {
+        "tags": [
+          "admin_users"
+        ],
+        "summary": "Deactivate (soft delete) an user",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deactivated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "first_name": {
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string"
+                    },
+                    "email_verified_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "refresh_token": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "deleted_at": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "password",
+                    "role",
+                    "email_verified_at",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/users/{user_id}/logout": {
+      "patch": {
+        "tags": [
+          "admin_users"
+        ],
+        "summary": "Logout a user",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User logged out successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "first_name": {
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string"
+                    },
+                    "email_verified_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "refresh_token": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "deleted_at": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "password",
+                    "role",
+                    "email_verified_at",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": [
+          "admin_users"
+        ],
+        "summary": "Get paginated users",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort_by",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Email",
+                "FirstName",
+                "LastName",
+                "Role",
+                "EmailVerifiedAt",
+                "CreatedAt",
+                "UpdatedAt"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "hide_staff",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "hide_deleted",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated users retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "first_name": {
+                        "type": "string"
+                      },
+                      "last_name": {
+                        "type": "string"
+                      },
+                      "password": {
+                        "type": "string"
+                      },
+                      "role": {
+                        "type": "string"
+                      },
+                      "email_verified_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "refresh_token": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "deleted_at": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "email",
+                      "first_name",
+                      "last_name",
+                      "password",
+                      "role",
+                      "email_verified_at",
+                      "created_at",
+                      "updated_at"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/admin/users/{user_id}": {
+      "get": {
+        "tags": [
+          "admin_users"
+        ],
+        "summary": "Show user details",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "first_name": {
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "string"
+                    },
+                    "email_verified_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "refresh_token": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "deleted_at": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "password",
+                    "role",
+                    "email_verified_at",
+                    "created_at",
+                    "updated_at"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Authenticate user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User authenticated successfully",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Cookie containing user session data",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logout user",
+        "responses": {
+          "200": {
+            "description": "User logged out successfully",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Cookie with empty value to remove user session",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Refresh user token",
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Cookie containing updated token",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "first_name": {
+                    "type": "string"
+                  },
+                  "last_name": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "first_name",
+                  "last_name",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/verify-email/resend": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Resend email for verification",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Email resent successfully"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "413": {
+            "$ref": "#/components/responses/PayloadTooLargeError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/auth/verify-email/{action_token}": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Verify email using action token",
+        "parameters": [
+          {
+            "name": "action_token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to login page"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/pokedex/{version}/pokedex/{user_id}": {
+      "get": {
+        "tags": [
+          "pokedex"
+        ],
+        "summary": "Get paginated user pokemons from the Pokedex",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "description": "API version",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "default": 1
+                  },
+                  "page_size": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "default": 10
+                  },
+                  "sort_by_field": {
+                    "type": "string"
+                  },
+                  "sort_order": {
+                    "type": "string",
+                    "enum": [
+                      "ASC",
+                      "DESC"
+                    ]
+                  },
+                  "filter_by_date": {
+                    "type": "object",
+                    "properties": {
+                      "start_date": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "end_date": {
+                        "type": "string",
+                        "format": "date"
+                      }
+                    },
+                    "required": [
+                      "start_date",
+                      "end_date"
+                    ]
+                  }
+                },
+                "required": [
+                  "page",
+                  "page_size"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Paginated user pokemons retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pokemons": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "base_experience": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          },
+                          "weight": {
+                            "type": "integer"
+                          },
+                          "is_default": {
+                            "type": "boolean"
+                          },
+                          "order": {
+                            "type": "integer"
+                          },
+                          "image": {
+                            "type": "string",
+                            "format": "url"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "base_experience",
+                          "height",
+                          "weight",
+                          "is_default",
+                          "order",
+                          "image",
+                          "created_at",
+                          "updated_at"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "pokemons"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/pokedex/{version}/pokemon/attempt/{attempt_id}": {
+      "post": {
+        "tags": [
+          "pokemon"
+        ],
+        "summary": "Submit a guess attempt for a Pokemon",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "guess": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "guess"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Guess attempt successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/pokedex/{version}/pokemon": {
+      "get": {
+        "tags": [
+          "pokemon"
+        ],
+        "summary": "Start a new Pokemon game",
+        "responses": {
+          "200": {
+            "description": "Pokemon game started successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pokemon_image": {
+                      "type": "string"
+                    },
+                    "attempt_id": {
+                      "type": "string"
+                    },
+                    "pokemon_id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "pokemon_image",
+                    "attempt_id",
+                    "pokemon_id"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/_auth_health": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "security": [],
+        "summary": "Check the server's health",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "I am auth healthy!"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "413": {
+            "$ref": "#/components/responses/PayloadTooLargeError"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaTypeError"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequestsError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/_health": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "security": [],
+        "summary": "Check the server's health",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "I am healthy!"
+                }
+              }
+            }
+          },
+          "413": {
+            "$ref": "#/components/responses/PayloadTooLargeError"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaTypeError"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequestsError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Local development instance"
+    }
+  ],
+  "components": {
+    "responses": {
+      "AllPokemonsCollectedError": {
+        "description": "Error when all available pokemons have been collected",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "All pokemons collected",
+              "code": "All pokemons collected",
+              "cause": null,
+              "payload": null
+            }
+          }
+        }
+      },
+      "BadRequestError": {
+        "description": "Error when something is wrong with the request sent",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true,
+                  "enum": [
+                    {
+                      "no_email_field": "Request was received without email field that was expected, validation will probably throw error before we get here"
+                    },
+                    {
+                      "no_password_field": "same as the above"
+                    },
+                    {
+                      "no_email_attribute": "same as the above"
+                    },
+                    {
+                      "no_password_attribute": "same as the above"
+                    },
+                    {
+                      "registration_invalid_email": "email provided for registration is invalid"
+                    },
+                    {
+                      "registration_invalid_password": "Password provided for registration is invalid"
+                    },
+                    {
+                      "registration_invalid_otp_token": "OTP Token provided for registration is invalid"
+                    },
+                    {
+                      "registration_email_already_in_use": "Email that user tries to register with is already in use"
+                    },
+                    {
+                      "token_action_executed": "any kind of verification process (email, reset password, freeze account) will get its actionable token, you'll get this error when token was already executed"
+                    },
+                    {
+                      "token_action_expired": "for the above mentioned token, this will be error when user tries using it after it has expired"
+                    },
+                    {
+                      "active_user_cannot_be_deleted_permanently": "Error that will be displayed in rare cases when super-admin tries to delete forever active user"
+                    },
+                    {
+                      "input is out of range": "Input is out of range"
+                    },
+                    {
+                      "no possible date and time matching input": "No possible date and time matching input"
+                    },
+                    {
+                      "input is not enough for unique date and time": "Input is not enough for unique date and time"
+                    },
+                    {
+                      "input contains invalid characters": "Input contains invalid characters"
+                    },
+                    {
+                      "premature end of input": "Premature end of input"
+                    },
+                    {
+                      "trailing input": "Trailing input"
+                    },
+                    {
+                      "bad or unsupported format string": "Bad or unsupported format string"
+                    },
+                    {
+                      "invalid_number_of_answers:{}": "Error that will be returned when on any question based request you send invalid number of answers"
+                    },
+                    {
+                      "invalid_otp_token": "Invalid OTP Token"
+                    },
+                    {
+                      "cannot_reassign_only_admin": "Error that is returned when the request would leave a company without any administrator users"
+                    },
+                    {
+                      "cannot_expire_only_owner": "Error that is returned when the request would leave a company without any administrator users"
+                    },
+                    {
+                      "content_disposition": "Error that is returned when the Content-Disposition header is not set"
+                    },
+                    {
+                      "filename": "Error that is returned when the File name is not sent in upload request"
+                    },
+                    {
+                      "file_type_not_allowed": "Invalid File type"
+                    },
+                    {
+                      "maximum_file_size_exceeded": "Maximum File size exceeded"
+                    },
+                    {
+                      "cannot_delete_default": "When user tries to delete company_pipeline if it is the default one, he will get this error and will need to assign different one as default"
+                    },
+                    {
+                      "uploader:content_disposition:unknown": "Something is wrong with the upload data or its type"
+                    },
+                    {
+                      "uploader:filename:unknown": "Something is wrong with the upload data or its type"
+                    },
+                    {
+                      "one_time_password_expired": "One time password that is sent to users with disabled 2fa after first step of login has expired"
+                    },
+                    {
+                      "bare_metal_product_item_already_assigned_to_bare_metal_product": "When user tries to add bare metal product item that already exists on bare metal product"
+                    }
+                  ]
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "Bad request",
+              "code": "general",
+              "cause": "invalid_json_payload",
+              "payload": null
+            }
+          }
+        }
+      },
+      "DieselError": {
+        "description": "Error related to database operations (Diesel)",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "DB Error",
+              "code": "db",
+              "cause": null,
+              "payload": null
+            }
+          }
+        }
+      },
+      "ForbiddenError": {
+        "description": "Error when trying to access forbidden resource",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true,
+                  "enum": []
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "Forbidden error",
+              "code": "forbidden",
+              "cause": "permission_denied_cannot_do_on_self",
+              "payload": null
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Error when something is wrong on the server side",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "Something went wrong",
+              "code": "server_error",
+              "cause": null,
+              "payload": null
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Error when resource wasn't found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "Not found error",
+              "code": "not_found",
+              "cause": null,
+              "payload": null
+            }
+          }
+        }
+      },
+      "PayloadTooLargeError": {
+        "description": "Payload sent was too large",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "Payload too large",
+              "code": "upload",
+              "cause": "max_bytes:5242880",
+              "payload": null
+            }
+          }
+        }
+      },
+      "TooManyRequestsError": {
+        "description": "Too many requests",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "Too many requests, retry in 58s",
+              "code": "chill_out",
+              "cause": null,
+              "payload": null
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Authorization error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true,
+                  "enum": [
+                    {
+                      "account_deactivated": "account has been soft deleted/user is banned"
+                    },
+                    {
+                      "email_not_verified": "email of the account has not been verified"
+                    },
+                    {
+                      "invalid_credentials": "user or password not ok"
+                    },
+                    {
+                      "invalid_otp_token": "otp token is invalid"
+                    },
+                    {
+                      "no_session": "no session found and it was expected to be there"
+                    },
+                    {
+                      "authentication_failed_no_session_found": "no session found in cache"
+                    },
+                    {
+                      "oauth_google_invalid_authorization_code": "code given from the oauth provider is invalid"
+                    },
+                    {
+                      "oauth_github_invalid_authorization_code": "code given from the oauth provider is invalid"
+                    },
+                    {
+                      "authentication_failed_no_intermediate_session": "no intermediate session found and it was expected to be there (first step of login skipped)"
+                    },
+                    {
+                      "invalid_one_time_password": "one time password is invalid (token sent to user after login if 2fa is enabled)"
+                    }
+                  ]
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "Unauthorized error",
+              "code": "unauthorized",
+              "cause": "authentication_error_invalid_csrf",
+              "payload": null
+            }
+          }
+        }
+      },
+      "UniqueViolationError": {
+        "description": "Request could not be processed because of conflict in the request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "Field with that value already exists",
+              "code": "unique_violation",
+              "cause": "Expertise with that name already exists",
+              "payload": null
+            }
+          }
+        }
+      },
+      "UnprocessableEntityError": {
+        "description": "Error when validation of the request fails",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "fieldNameThatFailsValidation": {
+                      "description": "Object for fieldName that is failing validation",
+                      "type": "object",
+                      "properties": {
+                        "field": {
+                          "type": "string",
+                          "description": "Name of the field that fails validation"
+                        },
+                        "errors": {
+                          "type": "array",
+                          "description": "Array of strings that are actual error codes",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "errors": {
+                "fieldName": {
+                  "field": "fieldName",
+                  "errors": [
+                    "required"
+                  ]
+                },
+                "anotherFieldName": {
+                  "field": "anotherFieldName",
+                  "errors": [
+                    "length_min:3"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "UnsupportedMediaTypeError": {
+        "description": "UnsupportedMediaType error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true,
+                  "enum": [
+                    {
+                      "in:{}": "Gives you the list of acceptable mime types"
+                    }
+                  ]
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "Unsupported media",
+              "code": "upload",
+              "cause": "in:image/jpeg,image/png",
+              "payload": null
+            }
+          }
+        }
+      },
+      "WrongPokemonGuessError": {
+        "description": "Error when the guessed Pokemon is wrong",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "code": {
+                  "type": "string",
+                  "nullable": false
+                },
+                "cause": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "payload": {
+                  "nullable": true,
+                  "type": "object",
+                  "properties": {
+                    "{some_key}": {
+                      "type": "string",
+                      "nullable": false
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "message": "Wrong Pokemon Guess",
+              "code": "Wrong guess",
+              "cause": null,
+              "payload": null
+            }
+          }
+        }
+      }
+    }
+  }
+}

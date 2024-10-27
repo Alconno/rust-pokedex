@@ -1,0 +1,1 @@
+pub const POKEMON_RANGE: i32 = 151;

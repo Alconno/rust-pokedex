@@ -1,0 +1,85 @@
+<head>
+  <title>Login</title>
+</head>
+
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+  async defer>
+</script>
+
+<body>
+  <form id="login-form" action="login" method="POST">
+    <input type="email" name="email" placeholder="Email">
+    <input type="password" name="password" placeholder="Password">
+
+    <div name="recaptcha_response" class="g-recaptcha" data-sitekey="6Ld7nrcpAAAAAKfdJRMxfwCDqANevlrM-N9PBjDw" 
+        data-action="LOGIN" aria-placeholder="recaptcha_response"></div>
+    <br>
+
+    <button type="submit">Login</button>
+    <button type="button" onclick="logout()">Logout</button> 
+  </form>
+</body>
+
+<script type="text/javascript">
+  var onloadCallback = function() {
+    grecaptcha.render('captcha', {
+      'sitekey' : '{{ recaptcha_key }}',
+      'data-size' : 'compact',
+      'theme' : 'dark'
+    });
+
+    // Add event listener for form submission
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+      onSubmit(event);
+    });
+  };
+
+  // Function to handle form submission
+  function onSubmit(event) {
+    event.preventDefault();
+
+    // Execute reCAPTCHA and obtain the token
+    grecaptcha.enterprise.ready(async () => {
+      const token = await grecaptcha.enterprise.execute('{{ recaptcha_key }}', {action: 'LOGIN'});
+
+      // Construct the form data
+      const formData = new FormData();
+      formData.append('email', event.target.email.value);
+      formData.append('password', event.target.password.value);
+      formData.append('recaptcha_response', token);
+
+      // Submit the form with the form data
+      fetch('/auth/login', {
+        method: 'POST',
+        body: formData // Send form data instead of JSON
+      })
+      .then(response => {
+        // Handle the response
+        console.log(response);
+      })
+      .catch(error => {
+        // Handle errors
+        console.error(error);
+      });
+    });
+  }
+
+  // Function to handle logout
+  function logout () {
+    fetch('/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      // Handle the response
+      console.log(response);
+    })
+    .catch(error => {
+      // Handle errors
+      console.error(error);
+    });
+  }
+</script>
